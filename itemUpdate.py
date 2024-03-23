@@ -13,7 +13,7 @@ del data
 
 
 validMods = []
-for i, item in enumerate(itemList):
+for i, item in enumerate(itemList[:10]):
     print(i, item, end=" ")
     try:
         r = requests.get(itemUrl.format(item))
@@ -27,5 +27,5 @@ for i, item in enumerate(itemList):
     validMods.append(item)
     print("valid")
 
-with open("moditems", 'w') as f:
+with open("./cache/moditems", 'w') as f:
     f.write('\n'.join(validMods) + "\n")
