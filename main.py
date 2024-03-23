@@ -5,10 +5,9 @@ itemsUrl = "https://api.warframe.market/v1/riven/items"
 
 auctionUrl = "https://api.warframe.market/v1/auctions/search?type=riven&weapon_url_name={}"
 
-itemUrl
-
 r = requests.get(itemsUrl)
 data = r.json()
+del r
 
 try:
     paylod = data["payload"]["items"]
