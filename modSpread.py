@@ -2,13 +2,18 @@
 import requests
 import os.path
 
-
 from mod import Order, Mod
 import itemUpdate
 
 ordersUrl = "https://api.warframe.market/v1/items/{}/orders"
 
-def run():
+rarities  = ["common", "uncommon", "rare", "legendary"]
+
+def run(rarity="legendary"):
+    assert(rarity in rarities)
+
+    modRestrict = rarities[rarities.index(rarity):]
+
     if not os.path.isfile("cache/moditems"):
         itemUpdate.run()
 
@@ -17,13 +22,14 @@ def run():
         modList = [Mod(*l.split()) for l in f.readlines() if l.strip() != ""]
 
     #fill bid and ask calc spread
+    modCount = len(modList)
     spreads = []
     for i, mod in enumerate(modList):
-        if mod.rarity != "legendary":
+        if not mod.rarity in modRestrict:
             continue
 
         r = requests.get(ordersUrl.format(mod.url_name))
-        print(i, mod.url_name)
+        print(f"{i} of {modCount}: {mod.url_name}")
         data = r.json()
         data = data["payload"]["orders"]
 
@@ -41,15 +47,17 @@ def run():
         mod.setBid(modBids)
 
         spread = mod.calSpread()
-        if spread is None:
+        if spread is None or spread > 0:
             continue
 
         spreads.append((mod.calSpread(), mod))
 
     spreads.sort(key=lambda tup: tup[0])
+    return spreads
 
-    for s, m in spreads[:10]:
-        print(m)
-        # print([b.value for b in m.bids])
-        # print([a.value for a in m.asks])
-        print(s)
+
+def render(spreads):
+    for s, m in spreads:
+        print(m.url_name)
+        print(f"spread of:  {s}")
+        print()

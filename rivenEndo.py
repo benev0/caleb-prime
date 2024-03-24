@@ -10,14 +10,11 @@ def run():
     data = r.json()
     del r
 
-    try:
-        paylod = data["payload"]["items"]
-    except:
-        print(data)
-        exit(1)
+    paylod = data["payload"]["items"]
 
     entries = [entry["url_name"] for entry in paylod]
 
+    rivenCount = len(entries)
     endoTarget = []
     for i, entry in enumerate(entries):
         segmentRequest = requests.get(auctionUrl.format(entry))
@@ -30,10 +27,12 @@ def run():
 
             endoTarget.append(RivenAuction(entry["id"], entry["buyout_price"], entry["item"]["mastery_level"], entry["item"]["mod_rank"], entry["item"]["re_rolls"]))
 
-        print(f"{i}: {len(endoTarget)}")
+        print(f"{i} of {rivenCount}: total of {len(endoTarget)} items found")
 
     endoTarget.sort(reverse=True)
+    return endoTarget
 
-    for e in endoTarget[:10]:
+
+def render(endoTarget, n):
+    for e in endoTarget[:n]:
         print(e)
-        print()

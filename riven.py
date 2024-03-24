@@ -18,12 +18,8 @@ class RivenAuction:
     def __str__(self) -> str:
         return f"id:    {self.id}\nprice: {self.price}\nendo:  {self.endoValue}\nepp:   {self.endoPerPlat}\n"
 
-    # def __cmp__(self):
-    #     return super.cmp(self.endoPerPlat, self.price)
-
     def __lt__(self, other):
         return self.endoPerPlat < other.endoPerPlat or (self.endoPerPlat == other.endoPerPlat and self.endoValue < other.endoValue)
 
     def __eq__(self, other):
         return self.endoPerPlat == other.endoPerPlat and self.endoValue == other.endoValue
-
