@@ -59,5 +59,7 @@ def run(rarity="legendary"):
 def render(spreads):
     for s, m in spreads:
         print(m.url_name)
-        print(f"spread of:  {s}")
+        print(f"plat spread: {s}")
+        print(f"endo   cost: {m.calCostEndo()}")
+        print(f"credit cost: {m.calCostCredits()}")
         print()

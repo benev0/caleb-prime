@@ -83,4 +83,3 @@ if __name__=='__main__':
     if not spreads is None:
         print("Spreads:")
         modSpread.render(spreads)
-        print()

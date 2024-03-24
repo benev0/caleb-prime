@@ -3,8 +3,8 @@ class Mod:
     def __init__(self, name, rarity, max_rank, tax) -> None:
         self.url_name = name
         self.rarity = rarity
-        self.max_rank = max_rank
-        self.tax = tax
+        self.max_rank = int(max_rank)
+        self.tax = int(tax)
         self.bids = []
         self.asks = []
 
@@ -20,6 +20,32 @@ class Mod:
         if not self.bids or not self.asks:
             return None
         return min([a.value for a in self.asks]) - max([b.value for b in self.bids])
+
+    def calCostEndo(self):
+        value = 0
+        if self.rarity == "common":
+            value = 10
+        elif self.rarity == "uncommon":
+            value = 20
+        elif self.rarity == "rare":
+            value = 30
+        else:
+            value = 40
+
+        return value * (2**self.max_rank - 1)
+
+    def calCostCredits(self):
+        value = 0
+        if self.rarity == "common":
+            value = 483
+        elif self.rarity == "uncommon":
+            value = 966
+        elif self.rarity == "rare":
+            value = 1449
+        else:
+            value = 1932
+
+        return value * (2**self.max_rank - 1) + self.tax
 
     def __str__(self):
         return f"{self.url_name} {self.rarity} {self.max_rank} {self.tax}"
