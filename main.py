@@ -25,7 +25,7 @@ if __name__=='__main__':
     args = sys.argv[:]
     args.append("")
 
-    if len(args) == 1:
+    if len(args) == 2:
         printArgs()
         sys.exit(0)
 
